@@ -3,8 +3,8 @@ export class AppError extends Error {
   constructor(message, statusCode) {
     super(message);               
     this.status = statusCode;
-    this.isOperational = true;
-    Error.captureStackTrace(this, this.constructor);
+    this.isOperational = true; // Helps avoid server crashes and marks the error expected
+    Error.captureStackTrace(this, this.constructor); // To make debugging easier and make stack trace clean and readable
   }
 }
 
@@ -13,3 +13,4 @@ export class AppError extends Error {
 export const asyncWrap = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
+
