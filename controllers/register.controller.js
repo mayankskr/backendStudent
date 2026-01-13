@@ -18,7 +18,7 @@ export const registerController = asyncWrap(async (req, res) => {
 
   // 2. Call service layer
   const result = await registerService(userData);
-
+  
   // 3. Send response to client
   res.status(201).json({
     success: true,

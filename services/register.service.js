@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import { AppError } from "../utils/errorhandler.js";
+import jwt from "jsonwebtoken";
+
 const registerService = async(data)=>{
     const {fullName, age, address, phoneNumber, email, password} = data; // Data is req.body
 
@@ -27,16 +29,25 @@ const registerService = async(data)=>{
         email,
         passwordHash
     });
+    // 5. Generate token
+     const token = jwt.sign(
+        { id: newUser._id, email: newUser.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
 
-    // 5. Return data
+    // 5. Return data + token
     return{
-        id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email,
-        age: newUser.age,
-        address: newUser.address,
-        phoneNumber: newUser.phoneNumber,
-        createdAt: newUser.createdAt
-    }
+        token,
+        user:{
+            id: newUser._id,
+            fullName: newUser.fullName,
+            email: newUser.email,
+            age: newUser.age,
+            address: newUser.address,
+            phoneNumber: newUser.phoneNumber,
+            createdAt: newUser.createdAt
+        }
+    };
 }
 export default registerService
