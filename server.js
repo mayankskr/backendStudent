@@ -2,6 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import editRoute from "./routes/editInfo.route.js";
+import meRoute from "./routes/me.route.js";
+
+
 
 // Routes
 import loginRoute from "./routes/login.route.js";
@@ -23,13 +27,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* =========================
+   Serve static file
+========================= */
+app.use("/uploads", express.static("uploads"));
+
+
+/* =========================
    ROUTES
 ========================= */
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(dashboardRoute);
-
-
+app.use(editRoute);
+app.use(meRoute);
 /* =========================
    TEST ROUTE
 ========================= */
